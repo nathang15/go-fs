@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"io"
 
-	pkg "../pkg"
+	pkg "github.com/nathang15/go-fs/pkg"
 )
 
 var logger pkg.Logger
