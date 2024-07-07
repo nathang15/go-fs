@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = ".;pb";
+
+message HeartbeatPacket {
+    int32 hbCount = 1;
+    int64   sentTime = 2;
+}

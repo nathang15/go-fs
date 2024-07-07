@@ -5,3 +5,5 @@ type Config struct {
 	FilePath      string
 	LocalFilePath string
 }
+
+var config *Config

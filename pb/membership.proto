@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = ".;pb";
+
+message JoinRequest{
+    string nodeAddress = 1;
+    string nodeName = 2;
+    bool needSpreading = 3;
+}
+
+message JoinResponse{
+    message WriteTransaction {
+        string FileName = 1;
+        int32 FileVersion = 2;
+        string RequestID = 3;
+        repeated string PreferenceNodes = 4;
+        int64 RegisteredTime  = 5;
+    }
+    message FileMetadata {
+        string FileName = 1;
+        int32 FileVersion = 2;
+        int32 FileSize = 3;
+        repeated string PreferenceNodes = 4;
+    }
+    repeated string Members = 1;
+    string MasterNode = 2;
+    int32 ElectionTerm = 3;
+    repeated FileMetadata Files = 4;
+    repeated WriteTransaction PendingWriteTransactions = 5;
+    bool JoinStatus = 6;    
+    string ErrorMessage = 7;
+}
+
+message LeaveRequest{
+    string leavingNodeAddress = 1;
+    string requesterNodeAddress = 2;
+}
+
+message LeaveResponse{
+    bool leaveStatus = 1;    
+    string errorMessage = 2;
+}
+
+service MemberShipService{
+    rpc Join (JoinRequest) returns (JoinResponse);
+
+    rpc Leave (LeaveRequest) returns (LeaveResponse);
+  }

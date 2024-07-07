@@ -1,0 +1,189 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = ".;pb";
+
+message WriteRegisterRequest{
+    string fileName = 1;
+    string requestId = 2;
+}
+
+message WriteRegisterResponse{
+    repeated string preferenceNodes = 1;
+    int32 fileVersion = 2;
+    bool needUserInteraction = 3;
+}
+
+message WritePreparationRequest{
+    string fileName = 1;
+    bytes fileValue = 2;    
+    int32 fileVersion = 3;
+    string requestId = 4;
+}
+
+message WritePreparationResponse{
+    int32 fileSize = 1;    
+}
+
+message WriteEndRequest{
+    string fileName = 1;
+    int32 fileSize = 2;
+    string requestId = 3;
+    bool cancelWriteRegistration = 4;
+
+    bool commit = 5;
+}
+
+message WriteEndResponse{
+}
+
+message ReadAcquireRequest{
+    string senderAddress = 1;
+    string fileName = 2;
+}
+
+message ReadAcquireResponse{
+    bool status = 1;    
+    int32 fileVersion = 2;
+    repeated string preferenceNodes = 3;
+}
+
+message ReadRequest{
+    string fileName = 1;
+    int32 fileVersion = 2;
+}
+
+message ReadResponse{
+    bytes fileValue = 1;
+}
+
+message DeleteRequest{
+    string fileName = 1;
+    string senderAddress = 2;
+}
+
+message DeleteResponse{
+    bool status = 1;    
+}
+
+message LocateRequest{
+    string fileName = 1;
+}
+
+message LocateResponse{
+    message PreferenceNode{
+        string nodebyAddress = 1;
+        string nodebyName = 2;        
+    }
+    string fileName = 1;
+    int32 fileVersion = 2;
+    int32 fileSize = 3;
+    repeated PreferenceNode replicas = 4;
+}
+
+message AllFilesResponse{
+    repeated LocateResponse Files = 1;
+}
+
+message BackupRequest{
+    message WriteTransaction {
+        string FileName = 1;
+        int32 FileVersion = 2;
+        string RequestID = 3;
+        repeated string PreferenceNodes = 4;
+        int64 RegisteredTime  = 5;
+    }
+    message FileMetadata {
+        string FileName = 1;
+        int32 FileVersion = 2;
+        int32 FileSize = 3;
+        repeated string PreferenceNodes = 4;
+    }
+    repeated FileMetadata Files = 1;
+    repeated WriteTransaction PendingWriteTransactions = 2;
+    int32 Counter = 3;
+}
+
+message BackupResponse{
+}
+
+message PromoteRequest{
+    string newMasterNode = 1;
+}
+
+message BackupFileRequest{
+    string TargetNode = 1;
+    string FileName = 2;
+    int32 FileSize = 3;  
+    int32 FileVersion = 4;
+}
+
+message CopyReplicaRequest{
+    string fileName = 1;
+    bytes filevalue = 2;  
+    int32 FileSize = 3;  
+    int32 fileVersion = 4;
+}
+
+message VotingRequest{
+    int32 ElectionTerm = 1;
+    string CandidateAddress = 2;
+}
+
+message VotingResponse{
+    bool Accepted = 1;
+}
+
+message AnnouncementRequest{
+    string newMasterAddress = 1;
+}
+
+message Empty {}
+
+service FileService{
+    //Register a write operation to the master
+    rpc WriteRegister (WriteRegisterRequest) returns (WriteRegisterResponse);
+
+    //Stream file content to the replica server (Phase 1 of 2PC)
+    rpc WritePrepare (stream WritePreparationRequest) returns (WritePreparationResponse);
+
+    //Execute the write operation on the replica server (Phase 2 of 2PC)
+    rpc WriteEnd (WriteEndRequest) returns (WriteEndResponse);
+
+    //Register a read operation to the master
+    rpc ReadAcquire (ReadAcquireRequest) returns (ReadAcquireResponse);
+
+    //Stream file content from the replica server
+    rpc Read (ReadRequest) returns (stream ReadResponse);
+
+    //Stream file content from the replica server
+    rpc Delete (DeleteRequest) returns (DeleteResponse);
+
+    //Update all file metadatas from master to the backups
+    rpc Backup(BackupRequest) returns(BackupResponse);
+
+    //Promote new master node which is sent by master
+    rpc Promote(PromoteRequest) returns(Empty);
+
+    //Request a node to copy its replica to another node, this request is sent by master
+    rpc BackupFile(BackupFileRequest) returns(Empty);
+
+    //Transfer a replica to the target node
+    rpc CopyReplica(stream CopyReplicaRequest) returns(Empty);
+
+    //Self voting to be the new master
+    rpc Vote(VotingRequest) returns(VotingResponse);
+
+    //Announce the new master role
+    rpc Announce(AnnouncementRequest) returns(Empty);
+
+    //Query all file on file server.
+    rpc ListAll(Empty) returns (AllFilesResponse);
+
+    //Delete all files
+    rpc DeleteAll(Empty) returns (Empty);
+
+    //Locate file information of a given file on file server
+    rpc Locate(LocateRequest) returns (LocateResponse);
+}
