@@ -8,13 +8,13 @@ Go Distributed File System
   - [ ] Heartbeat
 
 - [ ] **File Client and Server**
-  - [ ] File operations for Client:
-    - [ ] `put` (upload)
-    - [ ] `get` (download)
-    - [ ] `remove` (delete)
-    - [ ] `locate` (find)
-    - [ ] `ls` (list all files)
-    - [ ] `lshere` (list files at current node)
+  - [x] File operations for Client:
+    - [x] `put` (upload)
+    - [x] `get` (download)
+    - [x] `remove` (delete)
+    - [x] `locate` (find)
+    - [x] `ls` (list all files)
+    - [x] `lshere` (list files at current node)
   - [ ] Server manage file storage and respond to client requests.
 
 - [ ] **User Commands**
