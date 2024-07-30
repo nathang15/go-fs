@@ -14,4 +14,9 @@ type Config struct {
 	NumShownHeartbeats          int
 	HeartbeatTimeoutInMs        int
 	HeartbeatAddr               string
+	TCPPort                     int
+	GatewayNodes                []string
+	HostAddress                 string
+	InstanceID                  int
+	Timeout                     int
 }
