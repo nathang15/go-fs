@@ -19,4 +19,5 @@ type Config struct {
 	HostAddress                 string
 	InstanceID                  int
 	Timeout                     int
+	FileChunkSize               int
 }
