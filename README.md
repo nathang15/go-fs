@@ -7,14 +7,14 @@
 
 ## Roadmap
 
-- [ ] **Membership (A group of nodes can form a membership.)**
-  - [ ] Determine leader to be the node that starts the membership
-  - [ ] Each membership is a replica for the file service
-  - [ ] Able to join and leave a group.
-  - [ ] Handling node failures and network partitions.
-  - [ ] Heartbeat to detect failures as shown
+- [x] **Membership (A group of nodes can form a membership.)**
+  - [x] Determine leader to be the node that starts the membership
+  - [x] Each membership is a replica for the file service
+  - [x] Able to join and leave a group.
+  - [x] Handling node failures and network partitions.
+  - [x] Heartbeat to detect failures as shown
 
-- [ ] **File Client and Server**
+- [x] **File Client and Server**
   - [x] File operations for Client:
     - [x] `put` (upload)
     - [x] `get` (download)
@@ -22,18 +22,18 @@
     - [x] `locate` (find)
     - [x] `ls` (list all files)
     - [x] `lshere` (list files at current node)
-  - [ ] Server manage file storage and respond to client requests.
+  - [x] Server manage file storage and respond to client requests.
 
-- [ ] **File Operation and Membership Commands**
-    - [ ] Initializing a new group
-    - [ ] Joining an existing group
-    - [ ] Leaving the group
-    - [ ] File operations (`put`, `get`, `remove`, `locate`, `ls`, `lshere`)
+- [x] **File Operation and Membership Commands**
+    - [x] Initializing a new group
+    - [x] Joining an existing group
+    - [x] Leaving the group
+    - [x] File operations (`put`, `get`, `remove`, `locate`, `ls`, `lshere`)
 
-- [ ] **Replication and Consistency**
-  - [ ] Data replication across multiple nodes.
-  - [ ] Consistency for replicated data.
-  - [ ] Sync for file operations.
+- [x] **Replication and Consistency**
+  - [x] Data replication across multiple nodes.
+  - [x] Consistency for replicated data.
+  - [x] Sync for file operations.
 
 ## Testing
-Tested on AWS with 10 nodes. Below is the report showing the experiments of all operations against different file size using the system deployed on four AWS instances.
+Deployed on 2 AWS EC2 instances and achieved 35ms for write/update and 10ms for read for 100 Mb file size. Also working when not using AWS, just need to change up the config and main file.
