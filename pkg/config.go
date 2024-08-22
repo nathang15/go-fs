@@ -31,8 +31,10 @@ type Config struct {
 	Timeout                                 int
 	FileChunkSize                           int
 	WriteQuorum                             int
+	ReadQuorum                              int
 	NumberOfReplicas                        int
 	PendingWriteTransactionTimeoutInSeconds int
+	MaxDatagramSize                         int
 }
 
 func LoadConfig(configFile string) Config {

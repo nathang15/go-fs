@@ -1,0 +1,21 @@
+{
+    "TCPPort" : 50051,
+    "UDPPort" : 4000,
+    "LogPath" : "../log",
+    "FilePath" : "../db",
+    "LocalFilePath": "../localdb",
+    "MaxDatagramSize" : 8192,
+    "Timeout" : 10,
+    "HeartbeatIntervalTimeMs" : 300,
+    "HeartbeatTimeoutInMs" : 1000,
+    "NumberOfPredAndSucc" : 2,
+    "NumberOfReplicas" : 3,
+    "WriteQuorum": 2,
+    "ReadQuorum": 2,
+    "FileChunkSize" : 1024,
+    "PendingWriteTransactionTimeoutInSeconds" : 300,
+	"GatewayNodes": ["172.31.14.9"],
+    "NumShownHeartbeats" : 2,
+    "HeartbeatLog" : true,
+    "Membershiplog": true
+}
