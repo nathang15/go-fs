@@ -448,7 +448,7 @@ func (*grpcFileServer) ListAll(ctx context.Context, req *pb.Empty) (*pb.AllFiles
 
 // DeleteAll
 func (*grpcFileServer) DeleteAll(ctx context.Context, req *pb.Empty) (*pb.Empty, error) {
-	fileHandler.ClearDb()
+	fileHandler.ClearDB()
 	server.UpdateMetada([]FileMetadata{}, []WriteTransaction{})
 
 	return &pb.Empty{}, nil
@@ -1082,7 +1082,7 @@ func (*grpcFileServer) Delete(ctx context.Context, req *pb.DeleteRequest) (*pb.D
 	for _, preferenceNode := range preferenceNodes {
 		// if preferenceNode is the master, delete the file and incerase the number of ack
 		if preferenceNode == masterNode {
-			fileHandler.Delete(fileHandler.Fs533FilePath(filename))
+			fileHandler.Delete(fileHandler.FilePath(filename))
 			numberOfAcksReceived++
 			continue
 		}

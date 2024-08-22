@@ -86,7 +86,7 @@ func (m *MembershipService) Start(init bool) {
 	if init {
 		membershipService.Init(nil, nil)
 		server.Start(config.IPAddress, 0, []FileMetadata{}, []WriteTransaction{})
-		fileHandler.ClearDb()
+		fileHandler.ClearDB()
 	} else {
 		for _, node := range config.GatewayNodes {
 			logging(fmt.Sprintln("Start sending join request to gateway node: ", node))
@@ -100,7 +100,7 @@ func (m *MembershipService) Start(init bool) {
 				}
 				membershipService.Init(activeMembersByAddress, activeMembersByName)
 				server.Start(master, eTerm, initFiles, initPendingWriteTransactions)
-				fileHandler.ClearDb()
+				fileHandler.ClearDB()
 				logging(fmt.Sprintln("Finish join request. New members list: ", printMembershipList()))
 				break
 			}

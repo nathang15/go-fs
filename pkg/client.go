@@ -24,7 +24,7 @@ type FetchedFileMetadata struct {
 
 var replicaFiles []FileMetadata
 var fetchedFiles []FetchedFileMetadata
-var fileHandler FileOperation
+var fileHandler Operation
 var logManager Logger
 
 func (client *Client) Put(localfilename string, filename string) {
@@ -200,13 +200,13 @@ func (client *Client) ListHere() {
 	log.Printf("LSHERE command\n")
 
 	log.Printf("All local replicated files on folder %s are: \n", config.FilePath)
-	filenames := fileHandler.ListHere(config.FilePath)
+	filenames := fileHandler.ListFilesInFolder(config.FilePath)
 	for idx, file := range filenames {
 		log.Printf("File %d: %s\n", idx, file)
 	}
 
 	log.Printf("All local files on folder %s are: \n", config.LocalFilePath)
-	localFilenames := fileHandler.ListHere(config.LocalFilePath)
+	localFilenames := fileHandler.ListFilesInFolder(config.LocalFilePath)
 	for idx, file := range localFilenames {
 		log.Printf("File %d: %s\n", idx, file)
 	}
@@ -326,7 +326,7 @@ func (client *Client) ListAllFiles() []string {
 
 // Delete all local test files
 func (client *Client) ClearLocalDbTestFiles() {
-	fileHandler.ClearLocalDb("test_")
+	fileHandler.ClearLocalDB("test_")
 }
 
 // Delete all files

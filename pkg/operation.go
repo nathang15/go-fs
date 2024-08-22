@@ -116,6 +116,29 @@ func (op *Operation) CloseFile(localFile string) *os.File {
 	return file
 }
 
+// Open or create a file for writing
+func (*Operation) CreateOrOpenFile(localfile string) *os.File {
+	// check if file exists
+	filepath := localfile
+
+	// check if file exists
+	if _, err := os.Stat(filepath); err == nil {
+		deleteErr := os.Remove(filepath)
+		if deleteErr != nil {
+			log.Printf("Error: Unable to delete exisitng file %s. Error %s \n", filepath, deleteErr)
+			return nil
+		}
+	}
+
+	// open or create a new log file with preconfigured file name
+	file, err := os.OpenFile(filepath, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Printf("Error: Unable to create or open file %s. Error %s\n", filepath, err)
+	}
+
+	return file
+}
+
 func (*Operation) ListFilesInFolder(path string) []string {
 	files, err := os.ReadDir(path)
 	if err != nil {
