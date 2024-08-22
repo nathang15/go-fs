@@ -1,7 +1,7 @@
 # Go Distributed File System
 
 - The distributed file system is designed for basic file handling operations including write, read, delete and update. 
-- Utilizes Master Server architecture to handle the operations and the master is selected through the leader election process. 
+- Utilizes Leader-Follower architecture to handle the operations and the master(leader) is selected through the leader election process. 
 - Tolerate multiple node failures without impacting file availability and file handling functionalities. Every file is written onto 3 nodes asynchronously via an active replication process to maintain 3 replicas of the file in case of node failure. The put and read operation make use of Simple Write Quorum wherein R = W = 2. 
 - Utilizes heartbeat monitoring for failure detection. Every node sends and receives heartbeat messages from 2 successor and 2 predecessor nodes in a ring topology.
 

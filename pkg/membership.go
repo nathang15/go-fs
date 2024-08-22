@@ -31,14 +31,16 @@ type MembershipService struct {
 	restartMonitoringHb bool
 }
 
-type membershipServer struct{}
+type membershipServer struct {
+	pb.UnimplementedMemberShipServiceServer
+}
 
 var config Config
 var grpcServer *grpc.Server
 var server Server
 var membershipService MembershipService
 
-func (m *MembershipService) GetNodeAddress() []string {
+func (m *MembershipService) GetNodeAddresses() []string {
 	var result []string
 	for _, member := range membershipService.activeMembers.activeMembersByName {
 		result = append(result, member)
@@ -46,7 +48,7 @@ func (m *MembershipService) GetNodeAddress() []string {
 	return result
 }
 
-func (m *MembershipService) GetFollowerAddress() []string {
+func (m *MembershipService) GetFollowerAddresses() []string {
 	var result []string
 	for _, member := range membershipService.activeMembers.activeMembersByAddress {
 		if member == masterNode {
@@ -122,7 +124,7 @@ func (m *MembershipService) Stop() {
 	membershipService.activeMembers.removeMemberAtIndex(memberIndex)
 
 	if isMasterNode() {
-		server.RemoveNodeLeave(config.IPAddress)
+		server.Offboarding(config.IPAddress)
 	}
 
 	c := make(chan bool)
@@ -241,7 +243,7 @@ func (*membershipServer) Leave(ctx context.Context, req *pb.LeaveRequest) (*pb.L
 
 	membershipService.activeMembers.removeMemberAtIndex(memberIndex)
 	if isMasterNode() {
-		server.RemoveNodeLeave(req.GetLeavingNodeAddress())
+		server.Offboarding(req.GetLeavingNodeAddress())
 	}
 
 	for idx, pred := range prevPackets.getValues() {
@@ -259,7 +261,7 @@ func (*membershipServer) Leave(ctx context.Context, req *pb.LeaveRequest) (*pb.L
 
 // ----------------- Helper functions -----------------
 
-func stopGrpcServer() {
+func stopMembershipService() {
 	logging(fmt.Sprintf("Stopping membership service..."))
 	grpcServer.Stop()
 }

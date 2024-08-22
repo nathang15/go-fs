@@ -366,7 +366,7 @@ func notifyFail(failedNodeAddr string) {
 	for _, member := range membershipService.activeMembers.getIds() {
 		if config.IPAddress == member {
 			if config.IPAddress == masterNode {
-				server.RemoveNodeLeave(failedNodeAddr)
+				server.Offboarding(failedNodeAddr)
 			}
 			continue
 		}
