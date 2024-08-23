@@ -1,5 +1,5 @@
 # Go AWS Distributed File System
-## Notice: This is for learning purposes!
+## Notice: Working now! This is for learning purposes!
 
 - The distributed file system is designed for basic file handling operations including write, read, delete and update. 
 - Utilizes Leader-Follower architecture to handle the operations and the master(leader) is selected through the leader election process. 
