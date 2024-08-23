@@ -159,13 +159,13 @@ func (*membershipServer) Join(ctx context.Context, req *pb.JoinRequest) (*pb.Joi
 		nodeName = generateNodeName(nodeAddr)
 	}
 
-	logging(fmt.Sprintf("Receive join request from '%s' with option spreading new join is %t.\n", nodeAddr, req.GetNeedSpreading()))
+	logging(fmt.Sprintln("Receive join request from '%s' with option spreading new join is %t.\n", nodeAddr, req.GetNeedSpreading()))
 
 	if getMemberIndex(req.GetNodeAddress()) == -1 {
 		if req.GetNeedSpreading() {
 			for _, targetNodeAddr := range membershipService.activeMembers.getIds() {
 				if targetNodeAddr != config.IPAddress {
-					logging(fmt.Sprintf("Start updating about new join request to node %s: %d.\n", targetNodeAddr, config.TCPPort))
+					logging(fmt.Sprintln("Start updating about new join request to node %s: %d.\n", targetNodeAddr, config.TCPPort))
 					go sendJoinReq(nodeAddr, nodeName, targetNodeAddr, false)
 				}
 			}
@@ -174,7 +174,7 @@ func (*membershipServer) Join(ctx context.Context, req *pb.JoinRequest) (*pb.Joi
 		server.UpdateReplicaNodes(nodeAddr)
 
 	} else {
-		err := fmt.Sprintf("Node %s already exists in the membership list.\n", nodeAddr)
+		err := fmt.Sprintln("Node %s already exists in the membership list.\n", nodeAddr)
 		logging(fmt.Sprintln(err))
 		return nil, status.Errorf(codes.Internal, err)
 	}
