@@ -36,4 +36,4 @@
   - [x] Sync for file operations.
 
 ## Testing
-Deployed on 2 AWS EC2 instances and achieved 35ms for write/update and 10ms for read for 100 Mb file size. Also working when not using AWS, just need to change up the config and main file.
+Deployed on 3 AWS EC2 instances and achieved 35ms for write/update and 10ms for read for 100 Mb file size. Also working when not using AWS, just need to change up the config and main file.
