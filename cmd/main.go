@@ -11,7 +11,7 @@ import (
 	lib "github.com/nathang15/go-fs/pkg"
 )
 
-var configuration lib.Config
+var config lib.Config
 var membership lib.MembershipService
 var client lib.Client
 var server lib.Server
@@ -23,9 +23,9 @@ var mw io.Writer
 func main() {
 	logger.EnableLog()
 
-	configuration = lib.LoadConfig("../cmd/config.json")
+	config = lib.LoadConfig("../cmd/config.json")
 
-	membership.SetConfig(configuration)
+	membership.SetConfig(config)
 	// process user commands
 	processUserCommands()
 }
@@ -62,7 +62,7 @@ func startService(init bool, guest bool) {
 	if !guest {
 		membership.Start(init)
 	} else {
-		client.Init(configuration.GatewayNodes[0], configuration)
+		client.Init(config.GatewayNodes[0], config)
 	}
 }
 
