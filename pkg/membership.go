@@ -63,8 +63,8 @@ func (m *MembershipService) Len() int {
 	return membershipService.activeMembers.len()
 }
 
-func (m *MembershipService) SetConfig(config Config) {
-	config = config
+func (m *MembershipService) SetConfig(configuration Config) {
+	config = configuration
 }
 
 func (m *MembershipService) Init(byAddress []string, byName []string) {
@@ -149,6 +149,8 @@ func (m *MembershipService) Report() {
 	log.Println("----------------- Membership Service Report -----------------")
 	logging(fmt.Sprintln("Members: ", printMembershipList()))
 }
+
+// Membership Service APIS
 
 func (*membershipServer) Join(ctx context.Context, req *pb.JoinRequest) (*pb.JoinResponse, error) {
 	nodeAddr := req.GetNodeAddress()
@@ -269,7 +271,7 @@ func stopMembershipService() {
 func sendLeaveReq(nodeAddress string, targetNodeAddress string, returnChan chan bool) {
 	logging(fmt.Sprintf("Start sending leave requet to node '%s'.\n", targetNodeAddress))
 
-	cc, err := grpc.Dial(fmt.Sprintf("%s:%d", targetNodeAddress, config.TCPPort), grpc.WithInsecure())
+	cc, err := grpc.NewClient(fmt.Sprintf("%s:%d", targetNodeAddress, config.TCPPort), grpc.WithInsecure())
 	if err != nil {
 		errMsg := fmt.Sprintf("Failed to dial to node '%s': %v.\n", targetNodeAddress, err.Error())
 		logging(fmt.Sprintf("Cannot join to membership service because ", errMsg))
@@ -442,7 +444,8 @@ func (m *membersCounter) len() int {
 }
 
 func getMemberOffsetIndex(index int, offset int) int {
-	return (index + offset + membershipService.Len()) % membershipService.Len()
+	newIndex := (index + offset + membershipService.Len()) % membershipService.Len()
+	return newIndex
 }
 
 func generateNodeName(nodeAddress string) string {
@@ -454,6 +457,7 @@ func (c *membersCounter) removeMemberAtIndex(index int) {
 	removeNodeName := c.activeMembersByName[index]
 
 	c.activeMembersByAddress = append(c.activeMembersByName[:index], c.activeMembersByName[index+1:]...)
+	c.activeMembersByName = append(c.activeMembersByName[:index], c.activeMembersByName[index+1:]...)
 
 	membershipService.restartSendingHb = true
 	membershipService.restartMonitoringHb = true

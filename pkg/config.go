@@ -19,7 +19,6 @@ type Config struct {
 	HeartbeatLog                            bool
 	Membershiplog                           bool
 	HeartbeatIntervalTimeMs                 int
-	HeartbeatIntervalTimeSecond             int
 	NumberOfPredAndSucc                     int
 	UDPPort                                 int
 	NumShownHeartbeats                      int

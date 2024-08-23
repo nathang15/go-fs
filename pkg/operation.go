@@ -33,7 +33,7 @@ func (op *Operation) ClearDB() {
 	}
 
 	for _, file := range files {
-		err := os.Remove("../localdb/" + file.Name())
+		err := os.Remove(op.FilePath(file.Name()))
 		if err != nil {
 			log.Println("Could not delete file. Error: ", err)
 		}
@@ -91,28 +91,12 @@ func (op *Operation) Copy(src string, dest string) (int64, error) {
 }
 
 func (op *Operation) OpenFile(localFile string) *os.File {
-	file, err := os.Open(localFile)
+	filepath := localFile
+	file, err := os.Open(filepath)
 	if err != nil {
 		log.Println("Could not open file. Error: ", err)
 		return nil
 	}
-	return file
-}
-
-func (op *Operation) CloseFile(localFile string) *os.File {
-	if _, err := os.Stat(localFile); err == nil {
-		deleteErr := os.Remove(localFile)
-		if deleteErr != nil {
-			log.Printf("Could not delete existing file %s because %s \n", localFile, deleteErr)
-			return nil
-		}
-	}
-
-	file, err := os.OpenFile(localFile, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
-	if err != nil {
-		log.Printf("Unable to create or open file %s becaise %s\n", localFile, err)
-	}
-
 	return file
 }
 
@@ -142,7 +126,7 @@ func (*Operation) CreateOrOpenFile(localfile string) *os.File {
 func (*Operation) ListFilesInFolder(path string) []string {
 	files, err := os.ReadDir(path)
 	if err != nil {
-		log.Println("Could not open folder. Error: ", err)
+		log.Fatal(err.Error())
 		return nil
 	}
 
