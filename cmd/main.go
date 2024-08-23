@@ -23,7 +23,7 @@ var mw io.Writer
 func main() {
 	logger.EnableLog()
 
-	configuration = lib.LoadConfig("../configs/config.json")
+	configuration = lib.LoadConfig("../cmd/config.json")
 
 	membership.SetConfig(configuration)
 	// process user commands
