@@ -104,7 +104,7 @@ func (client *Client) Put(localfilename string, filename string) {
 			reportWriteTime(filename, fileVersion, fileSize, startWriteTime, time.Now())
 			log.Printf("FINISH COMMAND PUT file %s, new version is %d, replicas are on nodes: %s.\n", filename, fileVersion, preferenceNodes)
 		} else {
-			log.Printf("ROLLBACK COMMAND PUT file %s, it is unable to put file to fs533 system due to some reasons.\n", filename)
+			log.Printf("ROLLBACK COMMAND PUT file %s, Unable to put file to file system due to some reasons.\n", filename)
 		}
 	} else {
 		client.InternalEndWriteFile(requestID, filename, fileSize, masterNode, false, false)
@@ -132,7 +132,7 @@ func (client *Client) Fetch(filename string, localfilename string) {
 
 	fetchedFileExisted, fetchedFileSize := lookupLocalFetchedFile(filename, fileVersion, localfilename)
 	if fetchedFileExisted {
-		log.Printf("File '%s' already cached on local disk, it is fetch to local disk as file %s.\n", filename, localfilename)
+		log.Printf("File '%s' already cached on local disk, fetched to local disk as file %s.\n", filename, localfilename)
 		reportReadTime(filename, fileVersion, fetchedFileSize, startReadTime, time.Now())
 		return
 	}
@@ -140,7 +140,7 @@ func (client *Client) Fetch(filename string, localfilename string) {
 	replicatedFileExisted, replicatedFileSize := lookupReplicatedFile(filename, preferenceNodes, fileVersion, localfilename)
 
 	if replicatedFileExisted {
-		log.Printf("File '%s' already has a replica on local disk, it is fetch to local disk as file %s.\n", filename, localfilename)
+		log.Printf("File '%s' already has a replica on local disk, fetched to local disk as file %s.\n", filename, localfilename)
 		reportReadTime(filename, fileVersion, replicatedFileSize, startReadTime, time.Now())
 		return
 	}
@@ -177,7 +177,7 @@ func (client *Client) Report() {
 		log.Printf("Node %d: '%s', total size '%d', storing replicated files %s.\n", idx, node.NodeAddress, node.TotalFileSize, node.Files)
 	}
 
-	log.Printf("All files on fs533 systems are listed below.\n")
+	log.Printf("All files on file systems are listed below.\n")
 	for idx, fileMetada := range files {
 		log.Printf("File %d: %s, version %d, replicated on %s.\n", idx, fileMetada.FileName, fileMetada.FileVersion, fileMetada.PreferenceNodes)
 	}
@@ -307,7 +307,7 @@ func (client *Client) ListAllFiles() []string {
 	res, err1 := c.ListAll(ctx, listAllRequest)
 
 	if err1 != nil {
-		log.Println("Error: It is unable read the response for listall command due to error ", err)
+		log.Println("Error: Unable to read the response for listall command. Error: ", err)
 		return []string{}
 	}
 
@@ -351,7 +351,7 @@ func (client *Client) DeleteAllFiles() {
 	_, err1 := c.DeleteAll(ctx, &pb.Empty{})
 
 	if err1 != nil {
-		log.Println("Error: It is unable read the response for DeleteAllFiles command due to error ", err1)
+		log.Println("Error: Unable to read the response for DeleteAllFiles command. Error: ", err1)
 	}
 }
 
@@ -753,7 +753,7 @@ func readFileFromReplica(filename string, localfilename string, fileVersion int3
 	resStream, err := c.Read(ctx, readRequest)
 
 	if err != nil {
-		log.Println("Error: It is unable acquire read file ", filename, ". Error: ", err)
+		log.Println("Error: Unable to acquire read file ", filename, ". Error: ", err)
 		return 0
 	}
 
