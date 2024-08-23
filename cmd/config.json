@@ -1,6 +1,6 @@
 {
-    "TCPPort" : 50051,
-    "UDPPort" : 4000,
+    "TcpPort" : 50051,
+    "UdpPort" : 4000,
     "LogPath" : "../log",
     "FilePath" : "../db",
     "LocalFilePath": "../localdb",
@@ -14,7 +14,7 @@
     "ReadQuorum": 2,
     "FileChunkSize" : 1024,
     "PendingWriteTransactionTimeoutInSeconds" : 300,
-	"GatewayNodes": ["172.31.14.9"],
+	"GatewayNodes": ["172.31.14.9", "172.31.9.11"],
     "NumShownHeartbeats" : 2,
     "HeartbeatLog" : true,
     "Membershiplog": true
