@@ -14,7 +14,7 @@
     "ReadQuorum": 2,
     "FileChunkSize" : 1024,
     "PendingWriteTransactionTimeoutInSeconds" : 300,
-	"GatewayNodes": ["172.31.14.9"],
+	"GatewayNodes": ["3.231.202.82"],
     "NumShownHeartbeats" : 2,
     "HeartbeatLog" : true,
     "Membershiplog": true
