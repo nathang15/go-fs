@@ -40,7 +40,8 @@
 Deployed on 3 AWS EC2 instances and 10 nodes. Achieved **35ms for write/update** and **10ms for read** for 100 Mb file size. Also working when not using AWS, just need to change up the config and main file.
 
 ## Install and Run
-1. Set up 3 AWS EC2 Instance. I used Ubuntu t2.micro for all 3.
+0. Set up PAT Code if you don't have it already.
+1. Set up 3 AWS EC2 Instance. I used Ubuntu t2.micro for all 3. Configure the security groups and VPC settings accordingly.
 2. Set up key pairs and ssh into all 3 instances accordingly.
 3. Edit the GatewayNodes value within the config.json file. Put in the value of the PRIVATE ip address of the instances you want to be the initial master/leader.
 4. Perform `git clone` this repo on all 3 instances.
